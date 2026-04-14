@@ -8,10 +8,11 @@ app.use(cors());
 app.use(bodyParser.json());
 
 const db = mysql.createConnection({
-    host: 'localhost',
+    host: '${{RAILWAY_PRIVATE_DOMAIN}}',
     user: 'root',
-    password: 'Root',
-    database: 'hotel_management'
+    password: 'CcnwaPjrRBfOokNaAlEBgzrEZUmasgVv',
+    database: '${{MYSQL_DATABASE}}'
+    port: 3306
 });
 
 db.connect(err => {
