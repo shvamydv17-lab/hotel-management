@@ -111,31 +111,43 @@ th { background:#1e293b; color:white; }
 
 <script>
 
-const API = "https://hotel-management-xf4j.onrender.com";
+const API = "https://your-backend.onrender.com";
 
 function addCustomer(){
-    fetch(API+'/addCustomer',{
+    fetch(API + '/addCustomer',{
         method:'POST',
         headers:{'Content-Type':'application/json'},
         body: JSON.stringify({
-            name:name.value,
-            phone:phone.value,
-            email:email.value
+            name: document.getElementById('name').value,
+            phone: document.getElementById('phone').value,
+            email: document.getElementById('email').value
         })
-    }).then(res=>res.text()).then(alert);
+    })
+    .then(res => res.text())
+    .then(data => {
+        alert(data);
+        loadCustomers();
+        loadCustomerDropdown();
+    });
 }
 
 function bookRoom(){
-    fetch(API+'/bookRoom',{
+    fetch(API + '/bookRoom',{
         method:'POST',
         headers:{'Content-Type':'application/json'},
         body: JSON.stringify({
-            customer_id:custSelect.value,
-            room_id:roomSelect.value,
-            check_in:checkin.value,
-            check_out:checkout.value
+            customer_id: document.getElementById('custSelect').value,
+            room_id: document.getElementById('roomSelect').value,
+            check_in: document.getElementById('checkin').value,
+            check_out: document.getElementById('checkout').value
         })
-    }).then(res=>res.text()).then(alert);
+    })
+    .then(res => res.text())
+    .then(data => {
+        alert(data);
+        loadBookings();
+        loadRooms();
+    });
 }
 
 function loadCustomers(){
