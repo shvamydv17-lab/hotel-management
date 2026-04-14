@@ -112,3 +112,6 @@ app.get('/revenue', (req, res) => {
         res.json(result);
     });
 });
+app.get('/', (req, res) => {
+    res.send('Backend is running');
+});
