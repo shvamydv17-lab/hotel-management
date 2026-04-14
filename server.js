@@ -7,13 +7,15 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-const db = mysql.createConnection(process.env.DATABASE_URL);
+const db = mysql.createConnection({
+    uri: process.env.DATABASE_URL
+)};
 
 db.connect(err => {
     if (err) {
-        console.log('DB ERROR:',err);
+        console.log('DB ERROR:", err);
     } else {
-        console.log('Connected to MySQL');
+        console.log("Connected to Railway DB");
     }
 });
 
