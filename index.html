@@ -3,122 +3,153 @@
 <head>
     <title>Hotel Management System</title>
     <style>
-        body { font-family: Arial; background:#f4f4f4; text-align:center; }
-        .container { background:white; padding:20px; margin:20px auto; width:400px; border-radius:10px; }
-        input, select { width:90%; padding:10px; margin:5px; }
-        button { padding:10px; background:blue; color:white; border:none; cursor:pointer; }
-        table { width:90%; margin:20px auto; border-collapse: collapse; background:white; }
-        th, td { padding:10px; border:1px solid black; }
-        th { background:#333; color:white; }
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: #f0f2f5;
+        }
+
+        header {
+            background: #1e293b;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 22px;
+            letter-spacing: 1px;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 20px;
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            width: 300px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        h3 {
+            margin-top: 0;
+            color: #1e293b;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        table {
+            width: 95%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: center;
+        }
+
+        th {
+            background: #1e293b;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background: #f9fafb;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 20px;
+            color: #333;
+        }
     </style>
 </head>
 <body>
 
-<h1>Hotel Management System</h1>
+<header>Hotel Management System</header>
 
 <div class="container">
-<h3>Add Customer</h3>
-<input id="name" placeholder="Name">
-<input id="phone" placeholder="Phone">
-<input id="email" placeholder="Email">
-<button onclick="addCustomer()">Add</button>
+
+    <div class="card">
+        <h3>Add Customer</h3>
+        <input id="name" placeholder="Name">
+        <input id="phone" placeholder="Phone">
+        <input id="email" placeholder="Email">
+        <button onclick="addCustomer()">Add Customer</button>
+    </div>
+
+    <div class="card">
+        <h3>Book Room</h3>
+        <input id="custId" placeholder="Customer ID">
+        <input id="roomId" placeholder="Room ID">
+        <input id="checkin" type="date">
+        <input id="checkout" type="date">
+        <button onclick="bookRoom()">Book Room</button>
+    </div>
+
 </div>
 
-<div class="container">
-<h3>Book Room</h3>
-<input id="custId" placeholder="Customer ID">
-<input id="roomId" placeholder="Room ID">
-<input id="checkin" type="date">
-<input id="checkout" type="date">
-<button onclick="bookRoom()">Book</button>
-</div>
+<div class="section-title">Customers</div>
+<table>
+<thead>
+<tr><th>ID</th><th>Name</th><th>Phone</th><th>Email</th></tr>
+</thead>
+<tbody id="custTable"></tbody>
+</table>
 
-<h3>Customers</h3>
-<table id="custTable"><tbody></tbody></table>
+<div class="section-title">Rooms</div>
+<table>
+<thead>
+<tr><th>ID</th><th>Type</th><th>Status</th></tr>
+</thead>
+<tbody id="roomTable"></tbody>
+</table>
 
-<h3>Rooms</h3>
-<table id="roomTable"><tbody></tbody></table>
-
-<h3>Bookings</h3>
-<table id="bookingTable"><tbody></tbody></table>
+<div class="section-title">Bookings</div>
+<table>
+<thead>
+<tr><th>ID</th><th>Name</th><th>Room</th></tr>
+</thead>
+<tbody id="bookingTable"></tbody>
+</table>
 
 <script>
 
 function addCustomer(){
-    const nameVal = document.getElementById('name').value;
-    const phoneVal = document.getElementById('phone').value;
-    const emailVal = document.getElementById('email').value;
-
     fetch('https://hotel-management-xf4j.onrender.com/addCustomer',{
         method:'POST',
         headers:{'Content-Type':'application/json'},
         body: JSON.stringify({
-            name: nameVal,
-            phone: phoneVal,
-            email: emailVal
-        })
-    })
-    .then(res => res.text())
-    .then(data => {
-        alert(data);
-        loadCustomers();
-    });
-}
-
-function bookRoom(){
-    fetch('https://hotel-management-xf4j.onrender.com/bookRoom',{
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({
-            customer_id: custId.value,
-            room_id: roomId.value,
-            check_in: checkin.value,
-            check_out: checkout.value
+            name: document.getElementById('name').value,
+            phone: document.getElementById('phone').value,
+            email: document.getElementById('email').value
         })
     }).then(res=>res.text()).then(alert);
-}
-
-function loadCustomers(){
-    fetch('https://hotel-management-xf4j.onrender.com/customers')
-    .then(res=>res.json())
-    .then(data=>{
-        let rows='';
-        data.forEach(c=>{
-            rows+=`<tr><td>${c.customer_id}</td><td>${c.name}</td></tr>`;
-        });
-        custTable.innerHTML=rows;
-    });
-}
-
-function loadRooms(){
-    fetch('https://hotel-management-xf4j.onrender.com/rooms')
-    .then(res=>res.json())
-    .then(data=>{
-        let rows='';
-        data.forEach(r=>{
-            rows+=`<tr><td>${r.room_id}</td><td>${r.room_type}</td><td>${r.status}</td></tr>`;
-        });
-        roomTable.innerHTML=rows;
-    });
-}
-
-function loadBookings(){
-    fetch('https://hotel-management-xf4j.onrender.com/bookings')
-    .then(res=>res.json())
-    .then(data=>{
-        let rows='';
-        data.forEach(b=>{
-            rows+=`<tr><td>${b.booking_id}</td><td>${b.name}</td><td>${b.room_type}</td></tr>`;
-        });
-        bookingTable.innerHTML=rows;
-    });
-}
-
-loadCustomers();
-loadRooms();
-loadBookings();
-
-</script>
-
-</body>
-</html>
