@@ -7,18 +7,11 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-const db = mysql.createConnection({
-    host: process.env.MYSQLHOST,
-    user: process.env.MYSQLUSER,
-    password: process.env.MYSQLPASSWORD,
-    database: process.env.MYSQLDATABASE,
-    port: process.env.MYSQLPORT,
-    ssl: { rejectUnauthorized: false }
-});
+const db = mysql.createConnection(process.env.DATABASE_URL);
 
 db.connect(err => {
     if (err) {
-        console.log('Database connection failed');
+        console.log('DB ERROR:',err);
     } else {
         console.log('Connected to MySQL');
     }
