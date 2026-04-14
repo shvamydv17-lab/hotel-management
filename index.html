@@ -49,7 +49,7 @@ function addCustomer(){
     const phoneVal = document.getElementById('phone').value;
     const emailVal = document.getElementById('email').value;
 
-    fetch('http://localhost:3000/addCustomer',{
+    fetch('https://hotel-management-xf4j.onrender.com/addCustomer',{
         method:'POST',
         headers:{'Content-Type':'application/json'},
         body: JSON.stringify({
@@ -66,7 +66,7 @@ function addCustomer(){
 }
 
 function bookRoom(){
-    fetch('http://localhost:3000/bookRoom',{
+    fetch('https://hotel-management-xf4j.onrender.com/bookRoom',{
         method:'POST',
         headers:{'Content-Type':'application/json'},
         body: JSON.stringify({
@@ -79,7 +79,7 @@ function bookRoom(){
 }
 
 function loadCustomers(){
-    fetch('http://localhost:3000/customers')
+    fetch('https://hotel-management-xf4j.onrender.com/customers')
     .then(res=>res.json())
     .then(data=>{
         let rows='';
@@ -91,7 +91,7 @@ function loadCustomers(){
 }
 
 function loadRooms(){
-    fetch('http://localhost:3000/rooms')
+    fetch('https://hotel-management-xf4j.onrender.com/rooms')
     .then(res=>res.json())
     .then(data=>{
         let rows='';
@@ -103,7 +103,7 @@ function loadRooms(){
 }
 
 function loadBookings(){
-    fetch('http://localhost:3000/bookings')
+    fetch('https://hotel-management-xf4j.onrender.com/bookings')
     .then(res=>res.json())
     .then(data=>{
         let rows='';
