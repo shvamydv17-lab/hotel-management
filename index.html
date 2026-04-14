@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hotel Management System</title>
+    <style>
+        body { font-family: Arial; background:#f4f4f4; text-align:center; }
+        .container { background:white; padding:20px; margin:20px auto; width:400px; border-radius:10px; }
+        input, select { width:90%; padding:10px; margin:5px; }
+        button { padding:10px; background:blue; color:white; border:none; cursor:pointer; }
+        table { width:90%; margin:20px auto; border-collapse: collapse; background:white; }
+        th, td { padding:10px; border:1px solid black; }
+        th { background:#333; color:white; }
+    </style>
+</head>
+<body>
+
+<h1>Hotel Management System</h1>
+
+<div class="container">
+<h3>Add Customer</h3>
+<input id="name" placeholder="Name">
+<input id="phone" placeholder="Phone">
+<input id="email" placeholder="Email">
+<button onclick="addCustomer()">Add</button>
+</div>
+
+<div class="container">
+<h3>Book Room</h3>
+<input id="custId" placeholder="Customer ID">
+<input id="roomId" placeholder="Room ID">
+<input id="checkin" type="date">
+<input id="checkout" type="date">
+<button onclick="bookRoom()">Book</button>
+</div>
+
+<h3>Customers</h3>
+<table id="custTable"><tbody></tbody></table>
+
+<h3>Rooms</h3>
+<table id="roomTable"><tbody></tbody></table>
+
+<h3>Bookings</h3>
+<table id="bookingTable"><tbody></tbody></table>
+
+<script>
+
+function addCustomer(){
+    const nameVal = document.getElementById('name').value;
+    const phoneVal = document.getElementById('phone').value;
+    const emailVal = document.getElementById('email').value;
+
+    fetch('http://localhost:3000/addCustomer',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({
+            name: nameVal,
+            phone: phoneVal,
+            email: emailVal
+        })
+    })
+    .then(res => res.text())
+    .then(data => {
+        alert(data);
+        loadCustomers();
+    });
+}
+
+function bookRoom(){
+    fetch('http://localhost:3000/bookRoom',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({
+            customer_id: custId.value,
+            room_id: roomId.value,
+            check_in: checkin.value,
+            check_out: checkout.value
+        })
+    }).then(res=>res.text()).then(alert);
+}
+
+function loadCustomers(){
+    fetch('http://localhost:3000/customers')
+    .then(res=>res.json())
+    .then(data=>{
+        let rows='';
+        data.forEach(c=>{
+            rows+=`<tr><td>${c.customer_id}</td><td>${c.name}</td></tr>`;
+        });
+        custTable.innerHTML=rows;
+    });
+}
+
+function loadRooms(){
+    fetch('http://localhost:3000/rooms')
+    .then(res=>res.json())
+    .then(data=>{
+        let rows='';
+        data.forEach(r=>{
+            rows+=`<tr><td>${r.room_id}</td><td>${r.room_type}</td><td>${r.status}</td></tr>`;
+        });
+        roomTable.innerHTML=rows;
+    });
+}
+
+function loadBookings(){
+    fetch('http://localhost:3000/bookings')
+    .then(res=>res.json())
+    .then(data=>{
+        let rows='';
+        data.forEach(b=>{
+            rows+=`<tr><td>${b.booking_id}</td><td>${b.name}</td><td>${b.room_type}</td></tr>`;
+        });
+        bookingTable.innerHTML=rows;
+    });
+}
+
+loadCustomers();
+loadRooms();
+loadBookings();
+
+</script>
+
+</body>
+</html>
