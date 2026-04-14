@@ -81,3 +81,32 @@ app.get('/customers-simple', (req, res) => {
         res.json(result);
     });
 });
+app.post('/login', (req, res) => {
+    const { username, password } = req.body;
+
+    if (username === 'admin' && password === '1234') {
+        res.send({ success: true });
+    } else {
+        res.send({ success: false });
+    }
+});
+app.get('/availableRooms', (req, res) => {
+    db.query("SELECT * FROM Rooms WHERE status='Available'", (err, result) => {
+        if (err) return res.send(err);
+        res.json(result);
+    });
+});
+app.delete('/deleteBooking/:id', (req, res) => {
+    const id = req.params.id;
+
+    db.query("DELETE FROM Bookings WHERE booking_id=?", [id], (err) => {
+        if (err) return res.send(err);
+        res.send('Booking Deleted');
+    });
+});
+app.get('/revenue', (req, res) => {
+    db.query("SELECT SUM(amount) AS total FROM Payments", (err, result) => {
+        if (err) return res.send(err);
+        res.json(result);
+    });
+});

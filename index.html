@@ -151,29 +151,50 @@ function loadCustomers(){
 }
 
 function loadRooms(){
-    fetch(API+'/rooms')
+    fetch(API+'/availableRooms')
     .then(res=>res.json())
     .then(data=>{
         let rows='';
         let options='';
         data.forEach(r=>{
-            rows+=`<tr><td>${r.room_id}</td><td>${r.room_type}</td><td>${r.status}</td></tr>`;
+            rows+=`<tr><td>${r.room_id}</td><td>${r.room_type}</td></tr>`;
             options+=`<option value="${r.room_id}">${r.room_type}</option>`;
         });
         roomTable.innerHTML=rows;
         roomSelect.innerHTML=options;
     });
 }
-
+<h3>Total Revenue: ₹ <span id="revenue">0</span></h3>
 function loadBookings(){
     fetch(API+'/bookings')
     .then(res=>res.json())
     .then(data=>{
         let rows='';
         data.forEach(b=>{
-            rows+=`<tr><td>${b.booking_id}</td><td>${b.name}</td><td>${b.room_type}</td></tr>`;
+            rows+=`<tr>
+<td>${b.booking_id}</td>
+<td>${b.name}</td>
+<td>${b.room_type}</td>
+<td><button onclick="deleteBooking(${b.booking_id})">Delete</button></td>
+</tr>`;
         });
         bookingTable.innerHTML=rows;
+    });
+}
+function deleteBooking(id){
+    fetch(API+'/deleteBooking/'+id,{ method:'DELETE' })
+    .then(res=>res.text())
+    .then(data=>{
+        alert(data);
+        loadBookings();
+    });
+}
+
+function loadRevenue(){
+    fetch(API+'/revenue')
+    .then(res=>res.json())
+    .then(data=>{
+        revenue.innerText = data[0].total || 0;
     });
 }
 
@@ -193,6 +214,7 @@ loadCustomers();
 loadRooms();
 loadBookings();
 loadCustomerDropdown();
+loadRevenue();
 
 </script>
 
