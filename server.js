@@ -75,3 +75,9 @@ app.get('/rooms', (req, res) => {
         res.json(result);
     });
 });
+app.get('/customers-simple', (req, res) => {
+    db.query("SELECT customer_id, name FROM Customers", (err, result) => {
+        if (err) return res.send(err);
+        res.json(result);
+    });
+});
