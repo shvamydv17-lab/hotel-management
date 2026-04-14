@@ -73,6 +73,7 @@ th { background:#1e293b; color:white; }
 <div class="main">
 
 <div class="card">
+<h3>Total Revenue: ₹ <span id="revenue">0</span></h3>
 <h3>Add Customer</h3>
 <input id="name" placeholder="Name">
 <input id="phone" placeholder="Phone">
@@ -111,7 +112,7 @@ th { background:#1e293b; color:white; }
 
 <script>
 
-const API = "https://your-backend.onrender.com";
+const API = "https://hotel-management-xf4j.onrender.com";
 
 function addCustomer(){
     fetch(API + '/addCustomer',{
@@ -176,7 +177,7 @@ function loadRooms(){
         roomSelect.innerHTML=options;
     });
 }
-<h3>Total Revenue: ₹ <span id="revenue">0</span></h3>
+
 function loadBookings(){
     fetch(API+'/bookings')
     .then(res=>res.json())
@@ -220,15 +221,17 @@ function loadCustomerDropdown(){
         });
         custSelect.innerHTML=options;
     });
-    window.addCustomer = addCustomer;
+    
+}
+//
+window.addCustomer = addCustomer;
 window.bookRoom = bookRoom;
 window.loadCustomers = loadCustomers;
 window.loadRooms = loadRooms;
 window.loadBookings = loadBookings;
 window.loadCustomerDropdown = loadCustomerDropdown;
 window.loadRevenue = loadRevenue;
-}
-
+//
 loadCustomers();
 loadRooms();
 loadBookings();
